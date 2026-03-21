@@ -1,10 +1,6 @@
 # Dertopf Map
 
-[English](#english)
-
 ---
-
-## English
 
 ### Overview
 
@@ -18,7 +14,7 @@ A geographic data editor built with **Angular** and **CesiumJS**. This project d
 
 - **Framework**: Angular
 - **GIS Engine**: CesiumJS
-- **Other**: RxJs, NgRx,
+- **Other**: RxJs, NgRx, Fontawesome, Angular Material
 
 ### Installation & Setup
 
@@ -26,4 +22,3 @@ A geographic data editor built with **Angular** and **CesiumJS**. This project d
 2. **Install dependencies**: `pnpm install`
 3. **Run the app**: `npx nx serve map-app`
 
----
