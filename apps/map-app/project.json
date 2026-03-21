@@ -1,0 +1,100 @@
+{
+  "name": "map-app",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "projectType": "application",
+  "prefix": "app",
+  "sourceRoot": "apps/map-app/src",
+  "tags": [],
+  "targets": {
+    "build": {
+      "executor": "@ngx-env/builder:application",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/apps/map-app",
+        "browser": "apps/map-app/src/main.ts",
+        "tsConfig": "apps/map-app/tsconfig.app.json",
+        "inlineStyleLanguage": "scss",
+        "define": {
+          "process.env.CESIUM_TOKEN": "process.env.CESIUM_TOKEN"
+        },
+        "assets": [
+          "apps/map-app/src/favicon.ico",
+          "apps/map-app/src/assets",
+          {
+            "glob": "**/*",
+            "input": "node_modules/cesium/Build/Cesium/Assets",
+            "output": "assets/cesium/Assets"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/cesium/Build/Cesium/Widgets",
+            "output": "assets/cesium/Widgets"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/cesium/Build/Cesium/Workers",
+            "output": "assets/cesium/Workers"
+          },
+          {
+            "glob": "**/*",
+            "input": "node_modules/cesium/Build/Cesium/ThirdParty",
+            "output": "assets/cesium/ThirdParty"
+          }
+        ],
+        "styles": [
+          "apps/map-app/src/styles.scss",
+          "node_modules/cesium/Build/Cesium/Widgets/widgets.css"
+        ]
+      },
+      "configurations": {
+        "production": {
+          "budgets": [
+            {
+              "type": "initial",
+              "maximumWarning": "500kb",
+              "maximumError": "1mb"
+            },
+            {
+              "type": "anyComponentStyle",
+              "maximumWarning": "4kb",
+              "maximumError": "8kb"
+            }
+          ],
+          "outputHashing": "all"
+        },
+        "development": {
+          "optimization": false,
+          "extractLicenses": false,
+          "sourceMap": true
+        }
+      },
+      "defaultConfiguration": "production"
+    },
+    "serve": {
+      "continuous": true,
+      "executor": "@ngx-env/builder:dev-server",
+      "configurations": {
+        "production": {
+          "buildTarget": "map-app:build:production"
+        },
+        "development": {
+          "buildTarget": "map-app:build:development"
+        }
+      },
+      "defaultConfiguration": "development"
+    },
+    "lint": {
+      "executor": "@nx/eslint:lint"
+    },
+    "serve-static": {
+      "continuous": true,
+      "executor": "@nx/web:file-server",
+      "options": {
+        "buildTarget": "map-app:build",
+        "port": 4200,
+        "staticFilePath": "dist/apps/map-app/browser",
+        "spa": true
+      }
+    }
+  }
+}

@@ -1,0 +1,24 @@
+<button
+  class="draw-tooltip-btn"
+  mat-flat-button
+  [matMenuTriggerFor]="menu"
+  matTooltip="Draw on map"
+  aria-label="Draw on map"
+>
+  <fa-icon [icon]="icons.draw" size="sm"></fa-icon>
+</button>
+<mat-menu #menu="matMenu" class="dt-draw-menu">
+  <button mat-menu-item [disabled]="true">
+    <!-- (click)="editor.startCreating('point')" -->
+    <fa-icon [icon]="icons.point" class="menu-icon"></fa-icon>
+    <span>Точка</span>
+  </button>
+  <button mat-menu-item (click)="editor.startCreating('polyline')">
+    <fa-icon [icon]="icons.polyline" class="menu-icon"></fa-icon>
+    <span>Линия</span>
+  </button>
+  <button mat-menu-item (click)="editor.startCreating('polygon')">
+    <fa-icon [icon]="icons.polygon" class="menu-icon"></fa-icon>
+    <span>Полигон</span>
+  </button>
+</mat-menu>

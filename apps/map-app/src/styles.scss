@@ -1,0 +1,68 @@
+@import '@angular/material/prebuilt-themes/indigo-pink.css';
+
+@import 'https://fonts.googleapis.com/icon?family=Material+Icons';
+@import 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap';
+
+body {
+  margin: 0;
+  font-family: Roboto, 'Helvetica Neue', sans-serif;
+}
+
+.dt-draw-menu.mat-mdc-menu-panel {
+  min-width: 180px;
+  max-width: 280px;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.88);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  margin-top: 8px;
+
+  .mat-mdc-menu-content {
+    padding: 6px 0;
+  }
+
+  .mat-mdc-menu-item {
+    min-height: 48px;
+    padding: 0 16px;
+    margin: 0 4px;
+    border-radius: 8px;
+    width: calc(100% - 8px);
+
+    display: flex;
+    align-items: center;
+    transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+
+    &:hover:not([disabled]) {
+      background-color: #eef6ff;
+
+      .menu-icon {
+        color: #1976d2;
+        transform: scale(1.1);
+      }
+
+      span {
+        color: #1976d2;
+        font-weight: 500;
+      }
+    }
+
+    .menu-icon {
+      width: 28px;
+      margin-right: 12px;
+      font-size: 1.2rem;
+      color: #546e7a;
+      display: flex;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+
+    .mat-mdc-menu-item-text {
+      display: flex;
+    }
+
+    span {
+      font-size: 0.95rem;
+      color: #263238;
+      letter-spacing: 0.2px;
+    }
+  }
+}
