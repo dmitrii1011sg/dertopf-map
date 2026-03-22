@@ -2,11 +2,27 @@
   .map-buttons {
     * {
       position: absolute;
+      z-index: 10;
     }
 
     .map-home-btn {
       top: 20px;
       right: 20px;
     }
+  }
+
+  .dt-coords {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10;
+  }
+
+  .dt-compass {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    z-index: 10;
   }
 }

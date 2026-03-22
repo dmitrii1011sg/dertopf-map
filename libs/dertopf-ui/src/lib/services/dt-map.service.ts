@@ -1,5 +1,12 @@
 import { Injectable, ElementRef } from '@angular/core';
 import * as Cesium from 'cesium';
+import { Observable, Subject } from 'rxjs';
+
+export interface MouseCoords {
+  lat: number;
+  lng: number;
+  height: number;
+}
 
 const defaultViewerOptions = {
   terrain: Cesium.Terrain.fromWorldTerrain(),
@@ -20,6 +27,8 @@ export class DtMapService {
   private viewer!: Cesium.Viewer;
   private handler!: Cesium.ScreenSpaceEventHandler;
 
+  private _mouseMoveListener = new Subject<MouseCoords>();
+
   initViewer(container: ElementRef): Cesium.Viewer {
     Cesium.Ion.defaultAccessToken = (
       import.meta as any
@@ -32,7 +41,13 @@ export class DtMapService {
 
     this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);
 
+    this.mouseMoveListener();
+
     return this.viewer;
+  }
+
+  get mouseMove$(): Observable<any> {
+    return this._mouseMoveListener;
   }
 
   getViewer(): Cesium.Viewer {
@@ -55,5 +70,20 @@ export class DtMapService {
     this.viewer.camera.flyTo({
       destination: Cesium.Cartesian3.fromDegrees(lng, lat, height),
     });
+  }
+
+  private mouseMoveListener(): void {
+    this.handler.setInputAction((event: { endPosition: Cesium.Cartesian2 }) => {
+      const position = this.pickPosition(event.endPosition);
+
+      if (position) {
+        const cartographic = Cesium.Cartographic.fromCartesian(position);
+        this._mouseMoveListener.next({
+          lat: Cesium.Math.toDegrees(cartographic.latitude),
+          lng: Cesium.Math.toDegrees(cartographic.longitude),
+          height: cartographic.height,
+        });
+      }
+    }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
   }
 }

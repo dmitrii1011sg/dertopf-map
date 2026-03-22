@@ -1,0 +1,20 @@
+<button
+  class="compass-wrapper"
+  (click)="resetNorth()"
+  [style.transform]="rotateStyle"
+>
+  <svg
+    viewBox="0 0 20 20"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    class="compass-svg"
+  >
+    <path [attr.d]="svgPath" fill="#d32f2f" />
+    <path
+      [attr.d]="svgPath"
+      fill="#555"
+      style="transform: rotate(180deg); transform-origin: center"
+    />
+  </svg>
+  <div class="north-label">N</div>
+</button>

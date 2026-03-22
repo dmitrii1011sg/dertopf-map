@@ -1,0 +1,23 @@
+@let coords = coords$ | async;
+@if (coords) {
+  <div class="coords-panel">
+    <div class="coord-group">
+      <span class="coord-label">LON</span>
+      <span class="coord-value">{{ coords.lng | number: '1.6-6' }}°</span>
+    </div>
+
+    <div class="coord-divider"></div>
+
+    <div class="coord-group">
+      <span class="coord-label">LAT</span>
+      <span class="coord-value">{{ coords.lat | number: '1.6-6' }}°</span>
+    </div>
+
+    <div class="coord-divider"></div>
+
+    <div class="coord-group">
+      <span class="coord-label">HEIGHT</span>
+      <span class="coord-value">{{ coords.height | number: '1.0-0' }} m</span>
+    </div>
+  </div>
+}

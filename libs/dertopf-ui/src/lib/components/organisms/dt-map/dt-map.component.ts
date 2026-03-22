@@ -4,7 +4,11 @@ import { Store } from '@ngrx/store';
 import { mapFeature } from '@data-access';
 import { DtMapService } from '../../../services';
 import { DtMapEditorComponent, DtMapViewComponent } from '../../moleculars';
-import { DtMapButtonComponent } from '../../atoms';
+import {
+  DtMapButtonComponent,
+  DtMapCompassComponent,
+  DtMapCoordsComponent,
+} from '../../atoms';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
@@ -15,6 +19,8 @@ import { faHome } from '@fortawesome/free-solid-svg-icons';
     DtMapViewComponent,
     DtMapEditorComponent,
     DtMapButtonComponent,
+    DtMapCoordsComponent,
+    DtMapCompassComponent,
   ],
   templateUrl: './dt-map.component.html',
   styleUrls: ['./dt-map.component.scss'],
