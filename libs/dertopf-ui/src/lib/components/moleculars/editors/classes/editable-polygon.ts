@@ -29,6 +29,17 @@ export class DtEditablePolygon {
     this.renderPoint(index);
   }
 
+  removePoint(index: number): void {
+    if (index < 0 || index >= this.positions.length) return;
+
+    this.positions.splice(index, 1);
+
+    this.pointEntities.forEach((p) => this.viewer.entities.remove(p));
+    this.pointEntities = [];
+
+    this.positions.forEach((_, i) => this.renderPoint(i));
+  }
+
   updatePointPosition(index: number, position: Cesium.Cartesian3): void {
     if (this.positions[index]) {
       this.positions[index] = position;
