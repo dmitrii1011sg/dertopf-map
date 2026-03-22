@@ -1,0 +1,14 @@
+<div class="card-container">
+  <div class="icon-side">
+    <fa-icon [icon]="icon"></fa-icon>
+  </div>
+
+  <div class="info-side">
+    <div class="title">{{ title }}</div>
+    <div class="counter">{{ count }} objects</div>
+  </div>
+
+  <button class="nav-btn" type="button" (click)="onCardClick()">
+    <fa-icon [icon]="faNext"></fa-icon>
+  </button>
+</div>

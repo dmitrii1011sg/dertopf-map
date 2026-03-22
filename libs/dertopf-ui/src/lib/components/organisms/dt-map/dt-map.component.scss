@@ -1,4 +1,10 @@
 :host {
+  display: block;
+  position: relative; // Теперь все кнопки внутри будут считать границы карты "своими"
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
   .map-buttons {
     * {
       position: absolute;

@@ -1,11 +1,12 @@
 import { createFeature, createReducer, on } from '@ngrx/store';
-import { createEntityAdapter, EntityState } from '@ngrx/entity';
+import { createEntityAdapter, EntityState, Update } from '@ngrx/entity';
 import { MapActions } from './map.actions';
-import { MapPoint, MapPolygon, MapPolyline, MapSettings } from './map.models';
+import { MapSettings } from './map.models';
 import {
   StateActionMessage,
   StateActionMessageStatus,
 } from '../../models/state-action-result.model';
+import { MapPoint, MapPolygon, MapPolyline } from '../../models/entity.model';
 
 export const pointsAdapter = createEntityAdapter<MapPoint>();
 export const polylinesAdapter = createEntityAdapter<MapPolyline>();
@@ -36,44 +37,123 @@ export const mapFeature = createFeature({
   reducer: createReducer(
     initialState,
 
-    on(MapActions.createPolygon, (state, { polygon }) => ({
-      ...state,
-      polygons: polygonsAdapter.addOne(polygon, state.polygons),
-    })),
-    on(MapActions.updatePolygon, (state, { update }) => ({
-      ...state,
-      polygons: polygonsAdapter.updateOne(update, state.polygons),
-    })),
-    on(MapActions.deletePolygon, (state, { id }) => ({
-      ...state,
-      polygons: polygonsAdapter.removeOne(id, state.polygons),
-    })),
+    on(MapActions.createEntity, (state, { entity }) => {
+      switch (entity.type) {
+        case 'point':
+          return {
+            ...state,
+            points: pointsAdapter.addOne(entity, state.points),
+          };
+        case 'polyline':
+          return {
+            ...state,
+            polylines: polylinesAdapter.addOne(entity, state.polylines),
+          };
+        case 'polygon':
+          return {
+            ...state,
+            polygons: polygonsAdapter.addOne(entity, state.polygons),
+          };
+        default:
+          return state;
+      }
+    }),
 
-    on(MapActions.createPolyline, (state, { polyline }) => ({
-      ...state,
-      polylines: polylinesAdapter.addOne(polyline, state.polylines),
-    })),
-    on(MapActions.updatePolyline, (state, { update }) => ({
-      ...state,
-      polylines: polylinesAdapter.updateOne(update, state.polylines),
-    })),
-    on(MapActions.deletePolyline, (state, { id }) => ({
-      ...state,
-      polylines: polylinesAdapter.removeOne(id, state.polylines),
-    })),
+    on(MapActions.updateEntity, (state, { update, typeEntity }) => {
+      switch (typeEntity) {
+        case 'point':
+          return {
+            ...state,
+            points: pointsAdapter.updateOne(
+              update as Update<MapPoint>,
+              state.points,
+            ),
+          };
+        case 'polyline':
+          return {
+            ...state,
+            polylines: polylinesAdapter.updateOne(
+              update as Update<MapPolyline>,
+              state.polylines,
+            ),
+          };
+        case 'polygon':
+          return {
+            ...state,
+            polygons: polygonsAdapter.updateOne(
+              update as Update<MapPolygon>,
+              state.polygons,
+            ),
+          };
+        default:
+          return state;
+      }
+    }),
 
-    on(MapActions.createPoint, (state, { point }) => ({
-      ...state,
-      points: pointsAdapter.addOne(point, state.points),
-    })),
-    on(MapActions.updatePolygon, (state, { update }) => ({
-      ...state,
-      points: pointsAdapter.updateOne(update, state.points),
-    })),
-    on(MapActions.deletePolygon, (state, { id }) => ({
-      ...state,
-      points: pointsAdapter.removeOne(id, state.points),
-    })),
+    on(MapActions.deleteEntity, (state, { id, typeEntity }) => {
+      switch (typeEntity) {
+        case 'point':
+          return {
+            ...state,
+            points: pointsAdapter.removeOne(id, state.points),
+          };
+        case 'polyline':
+          return {
+            ...state,
+            polylines: polylinesAdapter.removeOne(id, state.polylines),
+          };
+        case 'polygon':
+          return {
+            ...state,
+            polygons: polygonsAdapter.removeOne(id, state.polygons),
+          };
+        default:
+          return state;
+      }
+    }),
+
+    on(MapActions.toggleEntityVisibility, (state, { id, typeEntity }) => {
+      switch (typeEntity) {
+        case 'point': {
+          const entity = state.points.entities[id];
+          if (!entity) return state;
+
+          return {
+            ...state,
+            points: pointsAdapter.updateOne(
+              { id, changes: { isVisible: !entity.isVisible } },
+              state.points,
+            ),
+          };
+        }
+        case 'polyline': {
+          const entity = state.polylines.entities[id];
+          if (!entity) return state;
+
+          return {
+            ...state,
+            polylines: polylinesAdapter.updateOne(
+              { id, changes: { isVisible: !entity.isVisible } },
+              state.polylines,
+            ),
+          };
+        }
+        case 'polygon': {
+          const entity = state.polygons.entities[id];
+          if (!entity) return state;
+
+          return {
+            ...state,
+            polygons: polygonsAdapter.updateOne(
+              { id, changes: { isVisible: !entity.isVisible } },
+              state.polygons,
+            ),
+          };
+        }
+        default:
+          return state;
+      }
+    }),
 
     on(MapActions.retrieveOne, (state) => ({
       ...state,

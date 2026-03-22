@@ -1,0 +1,43 @@
+<app-sidebar-layout-sections>
+  <app-sidebar-layout-section-header>
+    <dt-page-title [title]="isUpdate ? 'Edit' : 'Create'"> </dt-page-title>
+  </app-sidebar-layout-section-header>
+
+  <app-sidebar-layout-section-content>
+    <form [formGroup]="formGroup" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="outline">
+        <mat-label>Name</mat-label>
+        <input
+          matInput
+          [formControlName]="formFields.name"
+          placeholder="Enter name..."
+        />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="5"
+          cdkAutosizeMaxRows="10"
+          [formControlName]="formFields.description"
+          placeholder="Detailed description..."
+        >
+        </textarea>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-stroked-button type="button">Cancel</button>
+        <button
+          mat-flat-button
+          color="primary"
+          type="submit"
+          [disabled]="formGroup.invalid"
+        >
+          {{ isUpdate ? 'Save' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </app-sidebar-layout-section-content>
+</app-sidebar-layout-sections>

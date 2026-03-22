@@ -1,12 +1,20 @@
 import { Injectable, inject } from '@angular/core';
 import * as Cesium from 'cesium';
-import { Subject, Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { DtEditablePolyline } from '../classes/editable-polyline';
 import { DtMapService } from '../../../../services/';
 import { EditMode, EditorEntity } from '../models/map-editor-enum.model';
 import { DtEditablePolygon } from '../classes/editable-polygon';
 import { DtEditablePoint } from '../classes/editable-point';
 import { BaseEditableEntity } from '../classes/base-editable-entity';
+import { EntityType } from '@data-access';
+
+export interface DtEditorState {
+  mode: EditMode;
+  pointsCount: number;
+  type: EntityType;
+  positions: Cesium.Cartesian3[];
+}
 
 @Injectable({ providedIn: 'root' })
 export class DtMapEditorService {
@@ -21,8 +29,13 @@ export class DtMapEditorService {
     index: number;
   } | null = null;
 
-  private stateSubject = new Subject<{ mode: EditMode; pointsCount: number }>();
-  state$: Observable<any> = this.stateSubject.asObservable();
+  private stateSubject = new BehaviorSubject<DtEditorState>({
+    mode: EditMode.DEFAULT,
+    pointsCount: 0,
+    positions: [],
+    type: 'point',
+  });
+  state$: Observable<DtEditorState> = this.stateSubject.asObservable();
 
   private setupHandlers(viewer: Cesium.Viewer): void {
     if (this.handler) this.handler.destroy();
@@ -172,6 +185,15 @@ export class DtMapEditorService {
     this.stateSubject.next({
       mode: this.currentMode,
       pointsCount: this.activeEntity?.positions.length || 0,
+      positions: this.activeEntity?.positions || [],
+      type: this.activeEntity?.id.substring(
+        0,
+        this.activeEntity?.id.indexOf('-'),
+      ) as EntityType,
     });
+  }
+
+  getState(): DtEditorState {
+    return this.stateSubject.getValue();
   }
 }
