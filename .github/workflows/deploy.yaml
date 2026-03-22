@@ -32,6 +32,8 @@ jobs:
 
       - name: Build
         run: npx nx build map-app --base-href /dertopf-map/
+        env:
+          NG_APP_CESIUM_TOKEN: ${{ secrets.NG_APP_CESIUM_TOKEN }}
 
       - name: Fix for SPA (404 page)
         run: cp dist/apps/map-app/browser/index.html dist/apps/map-app/browser/404.html
