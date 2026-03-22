@@ -7,18 +7,41 @@
 >
   <fa-icon [icon]="icons.draw" size="sm"></fa-icon>
 </button>
+
+@let state = editor.state$ | async;
+@if (state && state?.mode !== modes.DEFAULT) {
+  <button
+    class="draw-tooltip-btn cancel"
+    mat-flat-button
+    color="danger"
+    matTooltip="Cancel drawing"
+    aria-label="Cancel drawing"
+    (click)="editor.clearAll()"
+  >
+    <fa-icon [icon]="icons.cancel" size="sm"></fa-icon>
+  </button>
+  <section class="state-info-panel">
+    <div class="state-block">
+      <span class="state-label">Mode:</span>
+      <span class="state-value">{{ state.mode }}</span>
+    </div>
+    <div class="state-block">
+      <span class="state-label">Points:</span>
+      <span class="state-value">{{ state.pointsCount }}</span>
+    </div>
+  </section>
+}
 <mat-menu #menu="matMenu" class="dt-draw-menu">
-  <button mat-menu-item [disabled]="true">
-    <!-- (click)="editor.startCreating('point')" -->
+  <button mat-menu-item (click)="editor.startCreating('point')">
     <fa-icon [icon]="icons.point" class="menu-icon"></fa-icon>
-    <span>Точка</span>
+    <span>Point</span>
   </button>
   <button mat-menu-item (click)="editor.startCreating('polyline')">
     <fa-icon [icon]="icons.polyline" class="menu-icon"></fa-icon>
-    <span>Линия</span>
+    <span>Line</span>
   </button>
   <button mat-menu-item (click)="editor.startCreating('polygon')">
     <fa-icon [icon]="icons.polygon" class="menu-icon"></fa-icon>
-    <span>Полигон</span>
+    <span>Polygon</span>
   </button>
 </mat-menu>

@@ -10,6 +10,7 @@ import {
   faMapMarkerAlt,
   faPenRuler,
   faRoute,
+  faXmark,
 } from '@fortawesome/free-solid-svg-icons';
 import { MatTooltipModule } from '@angular/material/tooltip';
 
@@ -30,8 +31,9 @@ export class DtMapEditorComponent {
   editor = inject(DtMapEditorService);
   modes = EditMode;
 
-  icons = {
+  readonly icons = {
     draw: faPenRuler,
+    cancel: faXmark,
     polygon: faDrawPolygon,
     polyline: faRoute,
     point: faMapMarkerAlt,
