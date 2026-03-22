@@ -8,7 +8,7 @@ A geographic data editor built with **Angular** and **CesiumJS**. This project d
 
 ### Currently implemented
 
-- **Reactive Drawing Tools**: Implementation of polyline and polygon sipmle drawing logic.
+- **Reactive Drawing Tools**: Implementation of point, polyline and polygon sipmle drawing logic.
 
 ### Tech Stack
 
