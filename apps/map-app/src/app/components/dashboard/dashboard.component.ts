@@ -25,8 +25,8 @@ import { mapFeature } from '@data-access';
 })
 export class DashboardComponent {
   private store = inject(Store);
-
   readonly router = inject(Router);
+
   readonly icons = {
     polygon: faDrawPolygon,
     polyline: faRoute,
