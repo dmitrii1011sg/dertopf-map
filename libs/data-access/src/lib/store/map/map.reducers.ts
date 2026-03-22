@@ -2,6 +2,10 @@ import { createFeature, createReducer, on } from '@ngrx/store';
 import { createEntityAdapter, EntityState } from '@ngrx/entity';
 import { MapActions } from './map.actions';
 import { MapPoint, MapPolygon, MapPolyline, MapSettings } from './map.models';
+import {
+  StateActionMessage,
+  StateActionMessageStatus,
+} from '../../models/state-action-result.model';
 
 export const pointsAdapter = createEntityAdapter<MapPoint>();
 export const polylinesAdapter = createEntityAdapter<MapPolyline>();
@@ -15,8 +19,7 @@ export interface MapState {
   settings: MapSettings;
 
   pending: boolean;
-
-  // TODO: make stateactionresult {status: ..., result: {error?: ..., value?: ....}}
+  message: StateActionMessage | null;
 }
 
 const initialState: MapState = {
@@ -25,6 +28,7 @@ const initialState: MapState = {
   polygons: polygonsAdapter.getInitialState(),
   settings: { center: [0, 0], zoom: 3, homeLocation: [56.9972, 40.9714] },
   pending: false,
+  message: null,
 };
 
 export const mapFeature = createFeature({
@@ -77,7 +81,14 @@ export const mapFeature = createFeature({
       error: null,
     })),
     on(MapActions.retrieveOneSuccess, (state, { entity, entityType }) => {
-      const newState = { ...state, loading: false };
+      const newState = {
+        ...state,
+        message: {
+          status: StateActionMessageStatus.success,
+          result: { value: entity },
+        },
+        loading: false,
+      };
 
       switch (entityType) {
         case 'polygon':
@@ -98,9 +109,10 @@ export const mapFeature = createFeature({
 
       return newState;
     }),
-    on(MapActions.retrieveOneFailure, (state) => ({
+    on(MapActions.retrieveOneFailure, (state, { error }) => ({
       ...state,
       loading: false,
+      message: { status: StateActionMessageStatus.failure, result: { error } },
     })),
   ),
 });
