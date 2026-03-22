@@ -9,7 +9,7 @@
 </button>
 
 @let state = editor.state$ | async;
-@if (state && state?.mode !== 'DEFAULT') {
+@if (state && state?.mode !== modes.DEFAULT) {
   <button
     class="draw-tooltip-btn cancel"
     mat-flat-button
@@ -32,8 +32,7 @@
   </section>
 }
 <mat-menu #menu="matMenu" class="dt-draw-menu">
-  <button mat-menu-item [disabled]="true">
-    <!-- (click)="editor.startCreating('point')" -->
+  <button mat-menu-item (click)="editor.startCreating('point')">
     <fa-icon [icon]="icons.point" class="menu-icon"></fa-icon>
     <span>Point</span>
   </button>

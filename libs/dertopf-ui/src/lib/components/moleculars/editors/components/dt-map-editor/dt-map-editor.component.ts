@@ -31,7 +31,7 @@ export class DtMapEditorComponent {
   editor = inject(DtMapEditorService);
   modes = EditMode;
 
-  icons = {
+  readonly icons = {
     draw: faPenRuler,
     cancel: faXmark,
     polygon: faDrawPolygon,

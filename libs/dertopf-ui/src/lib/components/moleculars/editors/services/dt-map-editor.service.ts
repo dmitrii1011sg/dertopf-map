@@ -5,17 +5,19 @@ import { DtEditablePolyline } from '../classes/editable-polyline';
 import { DtMapService } from '../../../../services/';
 import { EditMode, EditorEntity } from '../models/map-editor-enum.model';
 import { DtEditablePolygon } from '../classes/editable-polygon';
+import { DtEditablePoint } from '../classes/editable-point';
+import { BaseEditableEntity } from '../classes/base-editable-entity';
 
 @Injectable({ providedIn: 'root' })
 export class DtMapEditorService {
   private mapService = inject(DtMapService);
 
   private currentMode: EditMode = EditMode.DEFAULT;
-  private activeEntity: DtEditablePolyline | DtEditablePolygon | null = null;
+  private activeEntity: BaseEditableEntity | null = null;
   private handler: Cesium.ScreenSpaceEventHandler | null = null;
 
   private draggedPointData: {
-    entity: DtEditablePolyline | DtEditablePolygon;
+    entity: BaseEditableEntity;
     index: number;
   } | null = null;
 
@@ -94,18 +96,15 @@ export class DtMapEditorService {
     }
   }
 
-  startCreating(type?: 'polyline' | 'polygon'): void {
+  startCreating(type?: 'polyline' | 'polygon' | 'point'): void {
     const viewer = this.mapService.getViewer();
 
     if (type) {
       this.clearAll();
     }
 
-    if (!this.activeEntity) {
-      this.activeEntity =
-        type === 'polygon'
-          ? new DtEditablePolygon(viewer, `polygon-${Date.now()}`)
-          : new DtEditablePolyline(viewer, `polyline-${Date.now()}`);
+    if (!this.activeEntity && type) {
+      this.activeEntity = this.getNewEntityByType(viewer, type);
     }
 
     this.currentMode = EditMode.CREATE;
@@ -133,10 +132,12 @@ export class DtMapEditorService {
       this.handler.destroy();
       this.handler = null;
     }
+
     this.currentMode = EditMode.DEFAULT;
     if (this.mapService.getViewer()) {
       this.mapService.getViewer().scene.screenSpaceCameraController.enableRotate = true;
     }
+
     this.emitState();
   }
 
@@ -145,6 +146,25 @@ export class DtMapEditorService {
     if (this.activeEntity) {
       this.activeEntity.dispose();
       this.activeEntity = null;
+    }
+  }
+
+  private getNewEntityByType(
+    viewer: Cesium.Viewer,
+    type: 'polyline' | 'polygon' | 'point',
+  ): BaseEditableEntity | null {
+    switch (type) {
+      case 'point':
+        return new DtEditablePoint(viewer, `point-${Date.now()}`);
+      case 'polygon':
+        return new DtEditablePolygon(viewer, `polygon-${Date.now()}`);
+      case 'polyline':
+        return (this.activeEntity = new DtEditablePolyline(
+          viewer,
+          `polyline-${Date.now()}`,
+        ));
+      default:
+        return null;
     }
   }
 
