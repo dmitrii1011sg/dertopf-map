@@ -1,0 +1,10 @@
+<button
+  class="dt-map-btn"
+  mat-flat-button
+  [matTooltip]="tooltip"
+  [attr.aria-label]="tooltip"
+  [class.active]="isActive"
+  (click)="mapClick.emit()"
+>
+  <fa-icon [icon]="icon"></fa-icon>
+</button>
