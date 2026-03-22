@@ -112,6 +112,49 @@ export const mapFeature = createFeature({
       }
     }),
 
+    on(MapActions.toggleEntityVisibility, (state, { id, typeEntity }) => {
+      switch (typeEntity) {
+        case 'point': {
+          const entity = state.points.entities[id];
+          if (!entity) return state;
+
+          return {
+            ...state,
+            points: pointsAdapter.updateOne(
+              { id, changes: { isVisible: !entity.isVisible } },
+              state.points,
+            ),
+          };
+        }
+        case 'polyline': {
+          const entity = state.polylines.entities[id];
+          if (!entity) return state;
+
+          return {
+            ...state,
+            polylines: polylinesAdapter.updateOne(
+              { id, changes: { isVisible: !entity.isVisible } },
+              state.polylines,
+            ),
+          };
+        }
+        case 'polygon': {
+          const entity = state.polygons.entities[id];
+          if (!entity) return state;
+
+          return {
+            ...state,
+            polygons: polygonsAdapter.updateOne(
+              { id, changes: { isVisible: !entity.isVisible } },
+              state.polygons,
+            ),
+          };
+        }
+        default:
+          return state;
+      }
+    }),
+
     on(MapActions.retrieveOne, (state) => ({
       ...state,
       loading: true,

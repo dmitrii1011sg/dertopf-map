@@ -28,6 +28,8 @@ export const MapActions = createActionGroup({
     'Delete Entity Success': props<{ id: string }>(),
     'Delete Entity Failure': props<{ error: any }>(),
 
+    'Toggle Entity Visibility': props<{ id: string; typeEntity: EntityType }>(),
+
     'Update Map Settings': props<{ settings: Partial<MapSettings> }>(),
   },
 });

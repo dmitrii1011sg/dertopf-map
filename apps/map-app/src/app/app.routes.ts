@@ -29,6 +29,13 @@ export const routes: Routes = [
             (m) => m.EntityFormComponent,
           ),
       },
+      {
+        path: ':type',
+        loadComponent: () =>
+          import('./components/entity-list/entity-list.component').then(
+            (m) => m.EntityListComponent,
+          ),
+      },
     ],
   },
 ];
