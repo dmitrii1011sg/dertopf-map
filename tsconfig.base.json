@@ -15,7 +15,8 @@
     "skipDefaultLibCheck": true,
     "baseUrl": ".",
     "paths": {
-      "@dertopf-ui": ["libs/dertopf-ui/src/index.ts"]
+      "@dertopf-ui": ["libs/dertopf-ui/src/index.ts"],
+      "@data-access": ["libs/data-access/src/index.ts"]
     }
   },
   "exclude": ["node_modules", "tmp"]

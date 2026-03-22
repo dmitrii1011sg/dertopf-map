@@ -1,2 +1,14 @@
-<dt-map-view></dt-map-view>
-<dt-map-editor></dt-map-editor>
+<div class="map-container">
+  <dt-map-view></dt-map-view>
+
+  <dt-map-editor></dt-map-editor>
+
+  <div class="map-buttons">
+    <dt-map-button
+      class="map-home-btn"
+      [icon]="icons.home"
+      tooltip="Fly to Home"
+      (mapClick)="flyToHome()"
+    ></dt-map-button>
+  </div>
+</div>
