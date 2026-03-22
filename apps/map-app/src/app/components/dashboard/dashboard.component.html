@@ -1,0 +1,31 @@
+<app-sidebar-layout-sections>
+  <app-sidebar-layout-section-header>
+    <dt-page-title title="DT Map"> </dt-page-title>
+  </app-sidebar-layout-section-header>
+
+  <app-sidebar-layout-section-content>
+    <section style="padding: 16px">
+      <app-dashboard-card
+        title="Points"
+        [count]="points().ids.length"
+        [icon]="icons.point"
+        (navigate)="router.navigate(['/dashboard/points'])"
+      >
+      </app-dashboard-card>
+      <app-dashboard-card
+        title="Polylines"
+        [count]="polylines().ids.length"
+        [icon]="icons.polyline"
+        (navigate)="router.navigate(['/dashboard/polylines'])"
+      >
+      </app-dashboard-card>
+      <app-dashboard-card
+        title="Polygons"
+        [count]="polygons().ids.length"
+        [icon]="icons.polygon"
+        (navigate)="router.navigate(['/dashboard/polygons'])"
+      >
+      </app-dashboard-card>
+    </section>
+  </app-sidebar-layout-section-content>
+</app-sidebar-layout-sections>
