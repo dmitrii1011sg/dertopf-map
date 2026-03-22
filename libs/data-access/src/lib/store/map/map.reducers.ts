@@ -195,4 +195,14 @@ export const mapFeature = createFeature({
       message: { status: StateActionMessageStatus.failure, result: { error } },
     })),
   ),
+  extraSelectors: ({ selectPoints, selectPolylines, selectPolygons }) => ({
+    ...pointsAdapter.getSelectors(selectPoints),
+    ...polylinesAdapter.getSelectors(selectPolylines),
+    ...polygonsAdapter.getSelectors(selectPolygons),
+
+    selectAllPoints: pointsAdapter.getSelectors(selectPoints).selectAll,
+    selectAllPolylines:
+      polylinesAdapter.getSelectors(selectPolylines).selectAll,
+    selectAllPolygons: polygonsAdapter.getSelectors(selectPolygons).selectAll,
+  }),
 });

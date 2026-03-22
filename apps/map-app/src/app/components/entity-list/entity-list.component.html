@@ -1,6 +1,10 @@
 <app-sidebar-layout-sections>
   <app-sidebar-layout-section-header>
-    <dt-page-title title="{{ currentType() | titlecase }}"> </dt-page-title>
+    <dt-page-title title="{{ currentType() | titlecase }}">
+      <button mat-flat-button class="back" [routerLink]="['..']">
+        <fa-icon [icon]="icons.back"> </fa-icon>
+      </button>
+    </dt-page-title>
   </app-sidebar-layout-section-header>
 
   <app-sidebar-layout-section-content>

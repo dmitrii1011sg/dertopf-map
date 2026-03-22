@@ -1,5 +1,5 @@
 import { Component, computed, inject } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
@@ -11,6 +11,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
 import {
+  faChevronLeft,
   faEye,
   faEyeSlash,
   faPenToSquare,
@@ -29,6 +30,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
     MatExpansionModule,
     MatIconModule,
     MatButtonModule,
+    RouterLink,
   ],
   templateUrl: './entity-list.component.html',
   styleUrls: ['./entity-list.component.scss'],
@@ -47,6 +49,7 @@ export class EntityListComponent {
     delete: faTrash,
     show: faEye,
     hide: faEyeSlash,
+    back: faChevronLeft,
   };
 
   private points = this.store.selectSignal(mapFeature.selectPoints);

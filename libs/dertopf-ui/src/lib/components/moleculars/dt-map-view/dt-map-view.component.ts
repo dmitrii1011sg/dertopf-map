@@ -6,11 +6,18 @@ import {
   inject,
 } from '@angular/core';
 import { DtMapService } from '../../../services/dt-map.service';
+import { DtMapEntitiesLayerComponent } from '../dt-map-entities-layer/dt-map-entities-layer.component';
 
 @Component({
   selector: 'dt-map-view',
   standalone: true,
-  template: `<div #mapContainer class="map-container"></div>`,
+  imports: [DtMapEntitiesLayerComponent],
+  template: `
+    <div #mapContainer class="map-container"></div>
+    <dt-map-entities-layer
+      [viewer]="mapService.getViewer()"
+    ></dt-map-entities-layer>
+  `,
   styles: [
     `
       .map-container {
@@ -22,7 +29,7 @@ import { DtMapService } from '../../../services/dt-map.service';
 })
 export class DtMapViewComponent implements OnInit {
   @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
-  private mapService = inject(DtMapService);
+  mapService = inject(DtMapService);
 
   ngOnInit(): void {
     this.mapService.initViewer(this.mapContainer);

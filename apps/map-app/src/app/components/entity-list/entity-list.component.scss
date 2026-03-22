@@ -131,4 +131,40 @@
       margin-bottom: 8px;
     }
   }
+
+  .back {
+    width: 32px !important;
+    height: 32px !important;
+    min-width: 32px !important;
+    padding: 0 !important;
+    line-height: 32px !important;
+    margin-right: 12px;
+
+    background-color: #ffffff !important;
+    border: 1px solid #e5e7eb !important;
+    border-radius: 8px !important;
+    color: #4b5563 !important;
+    box-shadow: none !important;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+
+    fa-icon {
+      font-size: 14px;
+      display: flex;
+      transform: translateX(-1px);
+    }
+
+    &:hover {
+      background-color: #f9fafb !important;
+      border-color: #d1d5db !important;
+      color: #111827 !important;
+    }
+
+    &:active {
+      background-color: #f3f4f6 !important;
+    }
+  }
 }
