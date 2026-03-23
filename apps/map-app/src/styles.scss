@@ -8,14 +8,36 @@ body {
   font-family: Roboto, 'Helvetica Neue', sans-serif;
 }
 
+:root {
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-primary-light: #eff6ff;
+
+  --color-text-main: #111827;
+  --color-text-muted: #6b7280;
+  --color-text-light: #9ca3af;
+
+  --color-border: #e5e7eb;
+  --color-border-dark: #d1d5db;
+  --color-bg-main: #ffffff;
+  --color-bg-soft: #f9fafb;
+
+  --color-danger: #ef4444;
+  --color-danger-light: #fef2f2;
+
+  --glass-bg: rgba(255, 255, 255, 0.8);
+  --glass-blur: blur(8px);
+  --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
 .dt-draw-menu.mat-mdc-menu-panel {
   min-width: 180px;
   max-width: 280px;
   border-radius: 12px;
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(8px);
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
   border-top: 1px solid rgba(0, 0, 0, 0.05);
-  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+  box-shadow: var(--glass-shadow);
   margin-top: 8px;
 
   .mat-mdc-menu-content {
@@ -51,7 +73,7 @@ body {
       width: 28px;
       margin-right: 12px;
       font-size: 1.2rem;
-      color: #546e7a;
+      color: var(--color-text-muted);
       display: flex;
       justify-content: center;
       transition: all 0.2s ease;

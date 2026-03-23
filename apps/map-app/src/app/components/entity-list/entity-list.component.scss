@@ -11,7 +11,7 @@
       overflow: hidden;
 
       &.mat-expanded {
-        border-color: #3b82f6;
+        border-color: var(--color-primary);
         background: #f8faff;
       }
     }
@@ -98,17 +98,17 @@
         }
 
         .text-blue-500 {
-          color: #3b82f6;
+          color: var(--color-primary);
         }
       }
     }
 
     // TODO: MAKE COMMON COLORS IN STYLES.SCSS!!!
     .text-blue-500 {
-      color: #3b82f6;
+      color: var(--color-primary);
     }
     .text-red-500 {
-      color: #ef4444;
+      color: var(--color-danger);
     }
     .text-gray-600 {
       color: #4b5563;
