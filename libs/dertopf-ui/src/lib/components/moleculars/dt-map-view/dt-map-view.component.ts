@@ -12,24 +12,14 @@ import { DtMapEntitiesLayerComponent } from '../dt-map-entities-layer/dt-map-ent
   selector: 'dt-map-view',
   standalone: true,
   imports: [DtMapEntitiesLayerComponent],
-  template: `
-    <div #mapContainer class="map-container"></div>
-    <dt-map-entities-layer
-      [viewer]="mapService.getViewer()"
-    ></dt-map-entities-layer>
-  `,
-  styles: [
-    `
-      .map-container {
-        height: 100vh;
-        width: 100%;
-      }
-    `,
-  ],
+  templateUrl: './dt-map-view.component.html',
+  styleUrls: ['./dt-map-view.component.scss'],
 })
 export class DtMapViewComponent implements OnInit {
-  @ViewChild('mapContainer', { static: true }) mapContainer!: ElementRef;
-  mapService = inject(DtMapService);
+  @ViewChild('mapContainer', { static: true })
+  private readonly mapContainer!: ElementRef;
+
+  readonly mapService = inject(DtMapService);
 
   ngOnInit(): void {
     this.mapService.initViewer(this.mapContainer);

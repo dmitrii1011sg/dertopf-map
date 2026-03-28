@@ -12,6 +12,12 @@
     ></dt-map-button>
   </div>
 
+  <dt-map-context-menu
+    [state]="contextMenuState()"
+    (addPoint)="createPoint($event)"
+  >
+  </dt-map-context-menu>
+
   <dt-map-coords class="dt-coords"></dt-map-coords>
   <dt-map-compass class="dt-compass"></dt-map-compass>
 </div>

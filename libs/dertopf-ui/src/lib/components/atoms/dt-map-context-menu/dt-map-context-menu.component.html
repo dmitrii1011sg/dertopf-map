@@ -1,0 +1,45 @@
+@if (state(); as menuState) {
+  <div
+    class="dt-context-menu"
+    [style.left.px]="menuState.x"
+    [style.top.px]="menuState.y"
+    (contextmenu)="$event.preventDefault()"
+  >
+    <!-- TODO: complete all disabled button -->
+    @if (menuState.entity; as entity) {
+      <div class="menu-header">
+        Object:
+        <span class="highlight">{{ entity.name || 'None' }}</span>
+      </div>
+      <button class="menu-action" [disabled]="true" (click)="hide.emit(entity)">
+        <fa-icon [icon]="icons.hide"></fa-icon> Hide Object
+      </button>
+
+      <button
+        class="menu-action danger"
+        [disabled]="true"
+        (click)="remove.emit(entity)"
+      >
+        <fa-icon [icon]="icons.remove"></fa-icon> Remove Object
+      </button>
+    }
+
+    @if (menuState.worldPosition; as pos) {
+      <div class="menu-header">Info</div>
+
+      <button class="menu-action" (click)="addPoint.emit(pos)">
+        <fa-icon [icon]="icons.add"></fa-icon> Add Point
+      </button>
+
+      <button class="menu-action" (click)="copyCoordinates(pos)">
+        <fa-icon [icon]="icons.copy"></fa-icon> Copy Coordinates
+      </button>
+      <button
+        class="menu-action close"
+        (click)="openInGoogleMaps(menuState.worldPosition)"
+      >
+        <fa-icon [icon]="icons.google"></fa-icon> Open in GMaps
+      </button>
+    }
+  </div>
+}

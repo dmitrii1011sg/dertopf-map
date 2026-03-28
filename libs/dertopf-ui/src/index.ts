@@ -1,4 +1,5 @@
 export * from './lib/services';
+export * from './lib/utils';
 
 export * from './lib/components/atoms';
 export * from './lib/components/moleculars';

@@ -25,27 +25,26 @@ import { Viewer, CustomDataSource, Cartesian3, Color, Entity } from 'cesium';
 export class DtMapEntitiesLayerComponent implements OnInit, OnDestroy {
   @Input({ required: true }) viewer!: Viewer;
 
-  private store = inject(Store);
+  private readonly store = inject(Store);
 
-  private dataSource = new CustomDataSource('user-entities-layer');
+  private readonly dataSource = new CustomDataSource('user-entities-layer');
 
-  private points = this.store.selectSignal(mapFeature.selectAllPoints);
-  private polylines = this.store.selectSignal(mapFeature.selectAllPolylines);
-  private polygons = this.store.selectSignal(mapFeature.selectAllPolygons);
+  private readonly points = this.store.selectSignal(mapFeature.selectAllPoints);
+  private readonly polylines = this.store.selectSignal(
+    mapFeature.selectAllPolylines,
+  );
+  private readonly polygons = this.store.selectSignal(
+    mapFeature.selectAllPolygons,
+  );
 
-  readonly visibleEntities = computed<MapEntity[]>(() => {
-    return [
-      ...this.points().filter((p) => p.isVisible),
-      ...this.polylines().filter((p) => p.isVisible),
-      ...this.polygons().filter((p) => p.isVisible),
-    ];
-  });
+  private readonly visibleEntities = computed<MapEntity[]>(() => [
+    ...this.points().filter((p) => p.isVisible),
+    ...this.polylines().filter((p) => p.isVisible),
+    ...this.polygons().filter((p) => p.isVisible),
+  ]);
 
   constructor() {
-    effect(() => {
-      const entities = this.visibleEntities();
-      this.syncEntitiesWithMap(entities);
-    });
+    effect(() => this.syncEntitiesWithMap(this.visibleEntities()));
   }
 
   ngOnInit(): void {
@@ -53,34 +52,38 @@ export class DtMapEntitiesLayerComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
+    this.dataSource.entities.removeAll();
     this.viewer.dataSources.remove(this.dataSource);
   }
 
   private syncEntitiesWithMap(entities: MapEntity[]): void {
     this.dataSource.entities.removeAll();
 
-    for (const entity of entities) {
-      const mapEntity = new Entity({
-        id: entity.id,
-        name: entity.name,
-        description: entity.description,
+    for (const data of entities) {
+      const cesiumEntity = new Entity({
+        id: data.id,
+        name: data.name,
+        description: data.description,
       });
 
-      switch (entity.type) {
-        case 'point':
-          this.drawPoint(mapEntity, entity as MapPoint);
-          break;
-        case 'polyline':
-          this.drawPolyline(mapEntity, entity as MapPolyline);
-          break;
-        case 'polygon':
-          this.drawPolygon(mapEntity, entity as MapPolygon);
-          break;
-        default:
-          break;
-      }
+      this.applyGraphics(cesiumEntity, data);
+      this.dataSource.entities.add(cesiumEntity);
+    }
+  }
 
-      this.dataSource.entities.add(mapEntity);
+  private applyGraphics(cesiumEntity: Entity, data: MapEntity): void {
+    switch (data.type) {
+      case 'point':
+        this.drawPoint(cesiumEntity, data as MapPoint);
+        break;
+      case 'polyline':
+        this.drawPolyline(cesiumEntity, data as MapPolyline);
+        break;
+      case 'polygon':
+        this.drawPolygon(cesiumEntity, data as MapPolygon);
+        break;
+      default:
+        break;
     }
   }
 

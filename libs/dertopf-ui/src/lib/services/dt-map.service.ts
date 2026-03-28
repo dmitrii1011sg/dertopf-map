@@ -8,6 +8,13 @@ export interface MouseCoords {
   height: number;
 }
 
+export interface MouseRightClickEvent {
+  x: number;
+  y: number;
+  worldPosition: Cesium.Cartesian3 | null;
+  entity: Cesium.Entity | null;
+}
+
 const defaultViewerOptions = {
   terrain: Cesium.Terrain.fromWorldTerrain(),
   homeButton: false,
@@ -28,11 +35,15 @@ export class DtMapService {
   private handler!: Cesium.ScreenSpaceEventHandler;
 
   private _mouseMoveListener = new Subject<MouseCoords>();
+  private _mouseRightClickListener = new Subject<MouseRightClickEvent>();
 
   initViewer(container: ElementRef): Cesium.Viewer {
-    Cesium.Ion.defaultAccessToken = (
-      import.meta as any
-    ).env.NG_APP_CESIUM_TOKEN;
+    const token = (import.meta as any).env.NG_APP_CESIUM_TOKEN;
+    if (token) {
+      Cesium.Ion.defaultAccessToken = token;
+    } else {
+      console.warn('Cesium Token is missing');
+    }
 
     this.viewer = new Cesium.Viewer(
       container.nativeElement,
@@ -42,12 +53,17 @@ export class DtMapService {
     this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);
 
     this.mouseMoveListener();
+    this.mouseRightClickListener();
 
     return this.viewer;
   }
 
   get mouseMove$(): Observable<any> {
     return this._mouseMoveListener;
+  }
+
+  get mouseRightClick$(): Observable<MouseRightClickEvent> {
+    return this._mouseRightClickListener.asObservable();
   }
 
   getViewer(): Cesium.Viewer {
@@ -85,5 +101,26 @@ export class DtMapService {
         });
       }
     }, Cesium.ScreenSpaceEventType.MOUSE_MOVE);
+  }
+
+  private mouseRightClickListener(): void {
+    this.handler.setInputAction((movement: any) => {
+      const windowPosition = movement.position;
+
+      const pickedObject = this.viewer.scene.pick(windowPosition);
+      const entity =
+        Cesium.defined(pickedObject) && pickedObject.id instanceof Cesium.Entity
+          ? pickedObject.id
+          : undefined;
+
+      const worldPosition = this.pickPosition(windowPosition);
+
+      this._mouseRightClickListener.next({
+        x: windowPosition.x,
+        y: windowPosition.y,
+        worldPosition: worldPosition || null,
+        entity,
+      });
+    }, Cesium.ScreenSpaceEventType.RIGHT_CLICK);
   }
 }
