@@ -3,7 +3,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Store } from '@ngrx/store';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { map } from 'rxjs';
-import { EntityType, MapActions, mapFeature } from '@data-access';
+import { ENTITY_TYPES, EntityType, MapActions, mapFeature } from '@data-access';
 import { CommonModule } from '@angular/common';
 import { DtSidebarLayoutSectionsModule } from '../../layouts/sidebar-layout';
 import { DtPageTitleComponent } from '@dertopf-ui';
@@ -39,9 +39,14 @@ export class EntityListComponent {
   private route = inject(ActivatedRoute);
   private store = inject(Store);
 
-  readonly currentType = toSignal(
-    this.route.paramMap.pipe(map((params) => params.get('type'))),
-    { initialValue: 'points' },
+  readonly currentType = toSignal<EntityType>(
+    this.route.paramMap.pipe(
+      map((params) => {
+        const type = params.get('type');
+
+        return this.isEntityType(type) ? type : 'point';
+      }),
+    ),
   );
 
   readonly icons = {
@@ -56,18 +61,22 @@ export class EntityListComponent {
   private polylines = this.store.selectSignal(mapFeature.selectPolylines);
   private polygons = this.store.selectSignal(mapFeature.selectPolygons);
 
+  private isEntityType(value: string | null): value is EntityType {
+    return ENTITY_TYPES.includes(value as EntityType);
+  }
+
   readonly currentEntities = computed(() => {
     const type = this.currentType();
     let state: any;
 
     switch (type) {
-      case 'points':
+      case 'point':
         state = this.points();
         break;
-      case 'polylines':
+      case 'polyline':
         state = this.polylines();
         break;
-      case 'polygons':
+      case 'polygon':
         state = this.polygons();
         break;
       default:
@@ -84,7 +93,7 @@ export class EntityListComponent {
       this.store.dispatch(
         MapActions.toggleEntityVisibility({
           id,
-          typeEntity: type.slice(0, -1) as EntityType, // TODO: fix this
+          typeEntity: type,
         }),
       );
     }
@@ -96,7 +105,7 @@ export class EntityListComponent {
       this.store.dispatch(
         MapActions.deleteEntity({
           id,
-          typeEntity: type.slice(0, -1) as EntityType, // TODO: fix this
+          typeEntity: type,
         }),
       );
     }

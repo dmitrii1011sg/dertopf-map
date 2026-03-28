@@ -1,4 +1,5 @@
-export type EntityType = 'point' | 'polyline' | 'polygon';
+export const ENTITY_TYPES = ['point', 'polyline', 'polygon'] as const;
+export type EntityType = (typeof ENTITY_TYPES)[number];
 
 export interface BaseEntity {
   id: string;

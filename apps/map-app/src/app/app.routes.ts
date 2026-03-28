@@ -12,9 +12,6 @@ export const routes: Routes = [
             (m) => m.DashboardComponent,
           ),
       },
-      //   { path: 'points', loadComponent: () => import('').then((m) => m.) },
-      //   { path: 'polylines', loadComponent: () => import('').then((m) => m.) },
-      //   { path: 'polygons', loadComponent: () => import('').then((m) => m.) },
       {
         path: 'create',
         loadComponent: () =>

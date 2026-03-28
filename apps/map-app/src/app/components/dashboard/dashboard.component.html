@@ -9,21 +9,21 @@
         title="Points"
         [count]="points().ids.length"
         [icon]="icons.point"
-        (navigate)="router.navigate(['/dashboard/points'])"
+        (navigate)="router.navigate(['/dashboard/point'])"
       >
       </app-dashboard-card>
       <app-dashboard-card
         title="Polylines"
         [count]="polylines().ids.length"
         [icon]="icons.polyline"
-        (navigate)="router.navigate(['/dashboard/polylines'])"
+        (navigate)="router.navigate(['/dashboard/polyline'])"
       >
       </app-dashboard-card>
       <app-dashboard-card
         title="Polygons"
         [count]="polygons().ids.length"
         [icon]="icons.polygon"
-        (navigate)="router.navigate(['/dashboard/polygons'])"
+        (navigate)="router.navigate(['/dashboard/polygon'])"
       >
       </app-dashboard-card>
     </section>
