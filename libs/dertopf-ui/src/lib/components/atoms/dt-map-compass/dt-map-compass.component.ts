@@ -14,38 +14,19 @@ import DtCompassSvg from './dt-compass.svg';
   styleUrls: ['./dt-map-compass.component.scss'],
 })
 export class DtMapCompassComponent implements OnInit, OnDestroy {
-  private mapService = inject(DtMapService);
+  private readonly mapService = inject(DtMapService);
 
-  faCompass = faCompass;
-  direction = signal(0);
-  private lastDirection = 0;
-  private internalRotation = 0;
-
+  readonly faCompass = faCompass;
   readonly svgPath = DtCompassSvg.SVG_COMPASS;
 
+  readonly direction = signal(0);
+
+  private lastDirection = 0;
+  private internalRotation = 0;
   private removeListener?: () => void;
 
   ngOnInit(): void {
-    const viewer = this.mapService.getViewer();
-
-    this.removeListener = viewer.scene.postRender.addEventListener(() => {
-      const rawDirection = Cesium.Math.toDegrees(viewer.camera.heading);
-
-      if (Math.abs(this.lastDirection - rawDirection) > 0.1) {
-        let diff = rawDirection - this.lastDirection;
-
-        if (diff > 180) {
-          diff -= 360;
-        } else if (diff < -180) {
-          diff += 360;
-        }
-
-        this.internalRotation += diff;
-        this.lastDirection = rawDirection;
-
-        this.direction.set(this.internalRotation);
-      }
-    });
+    this.setupCameraListener();
   }
 
   ngOnDestroy(): void {
@@ -54,6 +35,32 @@ export class DtMapCompassComponent implements OnInit, OnDestroy {
 
   get rotateStyle(): string {
     return `rotate(${-this.direction()}deg)`;
+  }
+
+  private setupCameraListener(): void {
+    const viewer = this.mapService.getViewer();
+
+    this.removeListener = viewer.scene.postRender.addEventListener(() => {
+      this.updateCompass(viewer.camera.heading);
+    });
+  }
+
+  private updateCompass(headingRadians: number): void {
+    const rawDirection = Cesium.Math.toDegrees(headingRadians);
+    if (Math.abs(this.lastDirection - rawDirection) > 0.1) {
+      let diff = rawDirection - this.lastDirection;
+
+      if (diff > 180) {
+        diff -= 360;
+      } else if (diff < -180) {
+        diff += 360;
+      }
+
+      this.internalRotation += diff;
+      this.lastDirection = rawDirection;
+
+      this.direction.set(this.internalRotation);
+    }
   }
 
   resetNorth(): void {

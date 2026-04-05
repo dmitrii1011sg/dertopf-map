@@ -1,8 +1,9 @@
-import { AfterViewInit, Component, inject, OnDestroy } from '@angular/core';
+import { AfterViewInit, Component, DestroyRef, inject } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
 import { DtMapComponent, DtMapEditorService, EditMode } from '@dertopf-ui';
 import { SplitAreaComponent, SplitComponent } from 'angular-split';
-import { Subject, takeUntil, tap } from 'rxjs';
+import { tap } from 'rxjs';
 
 @Component({
   imports: [RouterModule, SplitAreaComponent, SplitComponent, DtMapComponent],
@@ -10,20 +11,14 @@ import { Subject, takeUntil, tap } from 'rxjs';
   templateUrl: './app.html',
   styleUrl: './app.scss',
 })
-export class App implements AfterViewInit, OnDestroy {
+export class App implements AfterViewInit {
+  private destroyRef = inject(DestroyRef);
   private router = inject(Router);
   private mapEditorService = inject(DtMapEditorService);
   protected title = 'map-app';
 
-  destroy$ = new Subject<void>();
-
   ngAfterViewInit(): void {
     this.editorModeListener();
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   private editorModeListener(): void {
@@ -34,7 +29,7 @@ export class App implements AfterViewInit, OnDestroy {
             ? this.router.navigate(['dashboard'])
             : this.router.navigate(['dashboard', 'create']),
         ),
-        takeUntil(this.destroy$),
+        takeUntilDestroyed(this.destroyRef),
       )
       .subscribe();
   }

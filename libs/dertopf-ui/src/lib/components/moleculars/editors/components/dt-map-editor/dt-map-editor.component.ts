@@ -28,9 +28,9 @@ import { MatTooltipModule } from '@angular/material/tooltip';
   styleUrls: ['./dt-map-editor.component.scss'],
 })
 export class DtMapEditorComponent {
-  editor = inject(DtMapEditorService);
-  modes = EditMode;
+  readonly editor = inject(DtMapEditorService);
 
+  readonly modes = EditMode;
   readonly icons = {
     draw: faPenRuler,
     cancel: faXmark,

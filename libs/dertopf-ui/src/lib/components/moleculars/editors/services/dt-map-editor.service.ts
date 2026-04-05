@@ -133,6 +133,13 @@ export class DtMapEditorService {
     this.emitState();
   }
 
+  addPoint(position: Cesium.Cartesian3): void {
+    if (this.activeEntity) {
+      this.activeEntity.addPoint(position);
+      this.emitState();
+    }
+  }
+
   removePoint(index: number): void {
     if (this.activeEntity) {
       this.activeEntity.removePoint(index);
