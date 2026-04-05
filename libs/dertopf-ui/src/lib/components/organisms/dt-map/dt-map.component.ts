@@ -7,7 +7,7 @@ import {
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Store } from '@ngrx/store';
-import { mapFeature } from '@data-access';
+import { MapActions, mapFeature } from '@data-access';
 import { DtMapService } from '../../../services';
 import {
   DtMapEditorComponent,
@@ -97,6 +97,17 @@ export class DtMapComponent implements AfterViewInit {
   createPoint(position: Cesium.Cartesian3): void {
     this.mapEditor.startCreating('point');
     this.mapEditor.addPoint(position);
+    this.closeContextMenu();
+  }
+
+  hideEntity(entity: Cesium.Entity): void {
+    this.store.dispatch(
+      MapActions.toggleEntityVisibility({
+        id: entity.id,
+        typeEntity: entity.properties?.getValue().type,
+      }),
+    );
+
     this.closeContextMenu();
   }
 }

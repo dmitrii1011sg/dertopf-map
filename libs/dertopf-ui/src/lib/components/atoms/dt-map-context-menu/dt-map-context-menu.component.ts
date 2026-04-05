@@ -1,6 +1,13 @@
 import * as Cesium from 'cesium';
 
-import { Component, input, output, inject } from '@angular/core';
+import {
+  Component,
+  input,
+  output,
+  inject,
+  ElementRef,
+  computed,
+} from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import { Clipboard } from '@angular/cdk/clipboard';
@@ -28,6 +35,7 @@ export interface ContextMenuState {
   styleUrls: ['./dt-map-context-menu.component.scss'],
 })
 export class DtMapContextMenuComponent {
+  private readonly el = inject(ElementRef);
   private readonly clipboard = inject(Clipboard);
 
   readonly state = input<ContextMenuState | null>(null);
@@ -44,6 +52,24 @@ export class DtMapContextMenuComponent {
     google: faG,
     hide: faEyeSlash,
   };
+
+  readonly shouldInvertX = computed(() => {
+    const coords = this.state();
+    const parent = this.el.nativeElement.parentElement;
+    const menuWidth = this.el.nativeElement.firstElementChild.clientWidth;
+    if (!coords || !parent) return false;
+
+    return parent.offsetWidth - coords.x < menuWidth;
+  });
+
+  readonly shouldInvertY = computed(() => {
+    const coords = this.state();
+    const parent = this.el.nativeElement.parentElement;
+    const menuHeight = this.el.nativeElement.firstElementChild.clientHeight;
+    if (!coords || !parent) return false;
+
+    return parent.offsetHeight - coords.y < menuHeight;
+  });
 
   copyCoordinates(cartesian: Cesium.Cartesian3): void {
     const point = cartesianToDegrees(cartesian);

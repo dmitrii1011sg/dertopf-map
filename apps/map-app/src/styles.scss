@@ -30,6 +30,10 @@ body {
   --glass-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
+.cesium-viewer-bottom {
+  right: unset !important;
+}
+
 .cesium-credit-textContainer {
   display: none !important;
 }

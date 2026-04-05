@@ -3,24 +3,17 @@
     class="dt-context-menu"
     [style.left.px]="menuState.x"
     [style.top.px]="menuState.y"
+    [class.invert-x]="shouldInvertX()"
+    [class.invert-y]="shouldInvertY()"
     (contextmenu)="$event.preventDefault()"
   >
-    <!-- TODO: complete all disabled button -->
     @if (menuState.entity; as entity) {
       <div class="menu-header">
         Object:
         <span class="highlight">{{ entity.name || 'None' }}</span>
       </div>
-      <button class="menu-action" [disabled]="true" (click)="hide.emit(entity)">
+      <button class="menu-action" (click)="hide.emit(entity)">
         <fa-icon [icon]="icons.hide"></fa-icon> Hide Object
-      </button>
-
-      <button
-        class="menu-action danger"
-        [disabled]="true"
-        (click)="remove.emit(entity)"
-      >
-        <fa-icon [icon]="icons.remove"></fa-icon> Remove Object
       </button>
     }
 

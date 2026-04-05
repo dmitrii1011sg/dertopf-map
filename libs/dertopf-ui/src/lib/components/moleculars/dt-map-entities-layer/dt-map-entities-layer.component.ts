@@ -64,6 +64,9 @@ export class DtMapEntitiesLayerComponent implements OnInit, OnDestroy {
         id: data.id,
         name: data.name,
         description: data.description,
+        properties: {
+          type: data.type,
+        },
       });
 
       this.applyGraphics(cesiumEntity, data);
