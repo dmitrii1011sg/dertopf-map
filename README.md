@@ -1,10 +1,12 @@
 # Dertopf Map
 
----
+> **[Live Demo](https://dmitrii1011sg.github.io/dertopf-map/dashboard)**
 
 ### Overview
 
 A geographic data editor built with **Angular** and **CesiumJS**. This project demonstrates an architectural approach to building complex GIS interfaces.
+![App Screenshot](./public/screenshots/common.png)
+![App Screenshot](./public/screenshots/editing.png)
 
 ### Currently implemented
 
