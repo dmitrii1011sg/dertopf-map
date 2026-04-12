@@ -12,16 +12,43 @@
 
   .side-nav {
     display: flex;
+    width: 56px;
     flex-direction: column;
     align-items: center;
     padding: 14px 6px;
     height: 100%;
+    box-sizing: border-box;
     background: var(--color-bg-dark);
     border-right: 1px solid var(--color-border);
+    justify-content: space-between;
+
+    &.expanded {
+      width: 200px;
+      padding: 12px;
+
+      button {
+        padding: 0 12px;
+        justify-content: flex-start;
+        gap: 12px;
+      }
+    }
+
+    .top-nav,
+    .bottom-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+      align-items: center;
+    }
 
     button {
-      width: 44px;
+      width: 100%;
+      min-width: 44px;
       height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 6px;
       border-radius: 8px;
       color: var(--color-text-muted);

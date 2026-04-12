@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import {
   NavigationEnd,
   Router,
@@ -10,6 +10,8 @@ import { DtMapComponent } from '@dertopf-ui';
 import { SplitAreaComponent, SplitComponent } from 'angular-split';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 import {
+  faAngleLeft,
+  faAngleRight,
   faDrawPolygon,
   faMapMarkerAlt,
   faRoute,
@@ -18,11 +20,22 @@ import { DtLayoutService } from '../../services/dt-layout.service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { filter, map } from 'rxjs';
 import { DragDropModule, CdkDragEnd } from '@angular/cdk/drag-drop';
+import { CommonModule } from '@angular/common';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export type SidebarTab = 'points' | 'lines' | 'polygons' | 'settings' | null;
 
+export interface WorkspaceNavidationItem {
+  id: string;
+  route: string[];
+  icon: any;
+  label: string;
+}
+
 @Component({
   imports: [
+    CommonModule,
+    MatTooltipModule,
     RouterModule,
     RouterLink,
     RouterLinkActive,
@@ -39,6 +52,8 @@ export type SidebarTab = 'points' | 'lines' | 'polygons' | 'settings' | null;
 export class WorkspaceComponent {
   private readonly router = inject(Router);
   readonly layout = inject(DtLayoutService);
+
+  readonly isSidebarExpanded = signal(false);
 
   private readonly currentUrl = toSignal(
     this.router.events.pipe(
@@ -59,7 +74,30 @@ export class WorkspaceComponent {
     polygon: faDrawPolygon,
     polyline: faRoute,
     point: faMapMarkerAlt,
+    expand: faAngleRight,
+    collapse: faAngleLeft,
   };
+
+  readonly navItems: WorkspaceNavidationItem[] = [
+    {
+      id: 'points',
+      route: ['dashboard', 'points'],
+      icon: this.icons.point,
+      label: 'Points',
+    },
+    {
+      id: 'polygons',
+      route: ['dashboard', 'polygons'],
+      icon: this.icons.polygon,
+      label: 'Polygons',
+    },
+    {
+      id: 'polylines',
+      route: ['dashboard', 'polylines'],
+      icon: this.icons.polyline,
+      label: 'Polylines',
+    },
+  ];
 
   toggleTab(route: string): void {
     const url = this.router.url;
@@ -78,6 +116,10 @@ export class WorkspaceComponent {
       this.closeSheet();
     }
     event.source._dragRef.reset();
+  }
+
+  toggleSidebar(): void {
+    this.isSidebarExpanded.update((v) => !v);
   }
 
   closeSheet(): void {

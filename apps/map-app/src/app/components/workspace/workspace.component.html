@@ -1,7 +1,35 @@
 @if (!layout.isMobile()) {
   <div class="workspace-container">
-    <div class="side-nav">
-      <button
+    <div class="side-nav" [class.expanded]="isSidebarExpanded()">
+      <section class="top-nav">
+        @for (item of navItems; track item.id) {
+          <button
+            [routerLink]="item.route"
+            routerLinkActive="active"
+            [matTooltip]="isSidebarExpanded() ? '' : item.label"
+            (click)="toggleTab(item.id)"
+          >
+            <fa-icon [icon]="item.icon"></fa-icon>
+            @if (isSidebarExpanded()) {
+              <span class="nav-label">{{ item.label }}</span>
+            }
+          </button>
+        }
+      </section>
+      <section class="bottom-nav">
+        <button
+          [matTooltip]="isSidebarExpanded() ? '' : 'Expanded'"
+          (click)="toggleSidebar()"
+        >
+          <fa-icon
+            [icon]="isSidebarExpanded() ? icons.collapse : icons.expand"
+          ></fa-icon>
+          @if (isSidebarExpanded()) {
+            <span class="nav-label">Collapse</span>
+          }
+        </button>
+      </section>
+      <!-- <button
         [routerLink]="['dashboard', 'points']"
         routerLinkActive="active"
         (click)="toggleTab('points')"
@@ -21,7 +49,7 @@
         (click)="toggleTab('polylines')"
       >
         <fa-icon [icon]="icons.polyline"></fa-icon>
-      </button>
+      </button> -->
     </div>
     <as-split direction="horizontal" unit="pixel">
       @if (isContentVisible()) {
