@@ -1,0 +1,37 @@
+<div class="entity-list">
+  @for (entity of entities; track entity.id) {
+    <div class="entity-item">
+      <div class="entity-main">
+        @if (icon) {
+          <div class="icon-wrapper">
+            <fa-icon [icon]="icon"></fa-icon>
+          </div>
+        }
+
+        <div class="entity-details">
+          <div class="entity-header">
+            <span class="entity-name">{{ entity.name }}</span>
+            <span class="entity-id">{{ entity.id | slice: 0 : 8 }}</span>
+          </div>
+          @if (entity.description) {
+            <p class="entity-desc">{{ entity.description }}</p>
+          }
+        </div>
+      </div>
+
+      <div class="entity-actions-group">
+        <div class="custom-actions">
+          <ng-container
+            *ngTemplateOutlet="actionsTemplate; context: { $implicit: entity }"
+          ></ng-container>
+        </div>
+
+        <button class="next-action" (click)="open.emit(entity.id)">
+          <fa-icon [icon]="nextIcon"></fa-icon>
+        </button>
+      </div>
+    </div>
+  } @empty {
+    <div class="empty-state">No entities found.</div>
+  }
+</div>

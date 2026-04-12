@@ -1,12 +1,15 @@
 import { AfterViewInit, Component, DestroyRef, inject } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { Router, RouterModule } from '@angular/router';
-import { DtMapComponent, DtMapEditorService, EditMode } from '@dertopf-ui';
-import { SplitAreaComponent, SplitComponent } from 'angular-split';
+import { DtMapEditorService, EditMode } from '@dertopf-ui';
 import { tap } from 'rxjs';
+import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { WorkspaceComponent } from './components/workspace/workspace.component';
+
+export type SidebarTab = 'points' | 'lines' | 'polygons' | 'settings' | null;
 
 @Component({
-  imports: [RouterModule, SplitAreaComponent, SplitComponent, DtMapComponent],
+  imports: [RouterModule, FontAwesomeModule, WorkspaceComponent],
   selector: 'app-root',
   templateUrl: './app.html',
   styleUrl: './app.scss',

@@ -1,0 +1,33 @@
+<app-sidebar-layout-sections>
+  <app-sidebar-layout-section-header>
+    <div class="header-container">
+      <dt-page-title title="Polygons">
+        <fa-icon [icon]="icons.entity" class="title-icon"></fa-icon>
+        <span class="count-badge">{{ filteredPoints().length }}</span>
+      </dt-page-title>
+
+      <div class="search-wrapper">
+        <fa-icon [icon]="icons.search" class="search-input-icon"></fa-icon>
+        <input
+          type="text"
+          placeholder="Search points..."
+          [value]="searchQuery()"
+          (input)="updateSearch($any($event.target).value)"
+          class="minimal-search"
+        />
+        @if (searchQuery()) {
+          <button class="clear-btn" (click)="updateSearch('')">
+            <fa-icon [icon]="icons.clear"></fa-icon>
+          </button>
+        }
+      </div>
+    </div>
+  </app-sidebar-layout-section-header>
+
+  <app-sidebar-layout-section-content>
+    <dt-entity-list
+      [entities]="filteredPoints()"
+      [icon]="icons.entity"
+    ></dt-entity-list>
+  </app-sidebar-layout-section-content>
+</app-sidebar-layout-sections>

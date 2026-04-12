@@ -1,0 +1,82 @@
+@if (!layout.isMobile()) {
+  <div class="workspace-container">
+    <div class="side-nav">
+      <button
+        [routerLink]="['dashboard', 'points']"
+        routerLinkActive="active"
+        (click)="toggleTab('points')"
+      >
+        <fa-icon [icon]="icons.point"></fa-icon>
+      </button>
+      <button
+        [routerLink]="['dashboard', 'polygons']"
+        routerLinkActive="active"
+        (click)="toggleTab('polygons')"
+      >
+        <fa-icon [icon]="icons.polygon"></fa-icon>
+      </button>
+      <button
+        [routerLink]="['dashboard', 'polylines']"
+        routerLinkActive="active"
+        (click)="toggleTab('polylines')"
+      >
+        <fa-icon [icon]="icons.polyline"></fa-icon>
+      </button>
+    </div>
+    <as-split direction="horizontal" unit="pixel">
+      @if (isContentVisible()) {
+        <as-split-area [size]="320" [minSize]="280" [maxSize]="500">
+          <router-outlet></router-outlet>
+        </as-split-area>
+      }
+
+      <as-split-area [size]="'*'">
+        <dt-map></dt-map>
+      </as-split-area>
+    </as-split>
+  </div>
+}
+@if (layout.isMobile()) {
+  <div class="mobile-workspace">
+    <dt-map class="fixed-bg"></dt-map>
+    <div
+      class="bottom-sheet glass-panel"
+      [class.open]="isContentVisible()"
+      cdkDrag
+      cdkDragLockAxis="y"
+      (cdkDragEnded)="onDragEnd($event)"
+    >
+      <button class="drag-handle" cdkDragHandle>
+        <div class="pill"></div>
+      </button>
+
+      <div class="sheet-content">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+
+    <div class="bottom-nav glass-panel">
+      <button
+        [routerLink]="['dashboard', 'points']"
+        routerLinkActive="active"
+        (click)="toggleTab('points')"
+      >
+        <fa-icon [icon]="icons.point"></fa-icon>
+      </button>
+      <button
+        [routerLink]="['dashboard', 'polygons']"
+        routerLinkActive="active"
+        (click)="toggleTab('polygons')"
+      >
+        <fa-icon [icon]="icons.polygon"></fa-icon>
+      </button>
+      <button
+        [routerLink]="['dashboard', 'polylines']"
+        routerLinkActive="active"
+        (click)="toggleTab('polylines')"
+      >
+        <fa-icon [icon]="icons.polyline"></fa-icon>
+      </button>
+    </div>
+  </div>
+}
