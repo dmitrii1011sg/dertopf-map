@@ -5,30 +5,48 @@
   height: 100%;
   overflow: hidden;
 
-  .map-buttons {
-    * {
-      position: absolute;
-      z-index: 10;
-    }
+  .map-home-btn,
+  .dt-coords,
+  .dt-compass {
+    position: absolute;
+    z-index: 10;
+  }
 
-    .map-home-btn {
-      top: 20px;
-      right: 20px;
-    }
+  .map-home-btn {
+    top: 20px;
+    right: 20px;
   }
 
   .dt-coords {
-    position: absolute;
     top: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10;
+    display: block;
   }
 
   .dt-compass {
-    position: absolute;
     bottom: 20px;
     right: 20px;
-    z-index: 10;
+    transition: all 0.3s ease;
+  }
+
+  @media (max-width: 540px) {
+    .dt-coords {
+      display: none;
+    }
+
+    .map-home-btn {
+      top: 16px;
+      right: 16px;
+    }
+
+    .dt-compass {
+      top: 16px;
+      left: auto;
+      bottom: auto;
+      left: 50%;
+      width: fit-content;
+      transform: translateX(-50%);
+    }
   }
 }

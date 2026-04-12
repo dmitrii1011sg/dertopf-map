@@ -7,6 +7,7 @@ export interface BaseEntity {
   description: string;
   type: EntityType;
   isVisible: boolean;
+  centroid: { lng: number; lat: number; height?: number };
 }
 
 export interface MapPoint extends BaseEntity {

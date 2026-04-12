@@ -5,8 +5,9 @@
 ### Overview
 
 A geographic data editor built with **Angular** and **CesiumJS**. This project demonstrates an architectural approach to building complex GIS interfaces.
-![App Screenshot](./public/screenshots/common.png)
+
 ![App Screenshot](./public/screenshots/editing.png)
+![App Screenshot](./public/screenshots/common.png)
 
 ### Currently implemented
 
