@@ -25,10 +25,11 @@
             *ngTemplateOutlet="actionsTemplate; context: { $implicit: entity }"
           ></ng-container>
         </div>
-
-        <button class="next-action" (click)="open.emit(entity.id)">
-          <fa-icon [icon]="nextIcon"></fa-icon>
-        </button>
+        @if (enableOpen) {
+          <button class="next-action" (click)="open.emit(entity.id)">
+            <fa-icon [icon]="nextIcon"></fa-icon>
+          </button>
+        }
       </div>
     </div>
   } @empty {

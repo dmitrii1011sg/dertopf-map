@@ -123,6 +123,37 @@
   display: flex;
   align-items: center;
   gap: 4px;
+
+  ::ng-deep button {
+    background: transparent !important;
+    cursor: pointer;
+    border: none !important;
+    color: var(--color-text-muted);
+    width: 30px !important;
+    height: 30px !important;
+    padding: 0 !important;
+    border-radius: 6px !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+
+    &:hover {
+      background-color: var(--color-bg-soft) !important;
+      color: var(--color-text-main);
+    }
+
+    &.active {
+      background-color: var(--color-primary-light) !important;
+      color: var(--color-primary) !important;
+      border: 1px solid rgba(59, 130, 246, 0.2) !important;
+
+      &:hover {
+        background-color: rgba(59, 130, 246, 0.15) !important;
+        color: var(--color-primary-hover) !important;
+      }
+    }
+  }
 }
 
 .next-action {

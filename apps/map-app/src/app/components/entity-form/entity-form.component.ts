@@ -16,6 +16,7 @@ import { Store } from '@ngrx/store';
 import { MapActions, MapEntity } from '@data-access';
 import { Cartesian3, Cartographic, Math as CesiumMath } from 'cesium';
 import { Router } from '@angular/router';
+import * as turf from '@turf/turf';
 
 enum EntityFormFields {
   name = 'name',
@@ -36,6 +37,25 @@ const cartesianToLngLat = (
     lng: CesiumMath.toDegrees(cartographic.longitude),
     lat: CesiumMath.toDegrees(cartographic.latitude),
     height: cartographic.height,
+  };
+};
+
+const getCentroid = (
+  positions: Cartesian3[],
+): { lng: number; lat: number; height?: number } => {
+  const coords = positions.map((p) => {
+    const pos = cartesianToLngLat(p);
+
+    return [pos.lat, pos.lng];
+  });
+
+  const feature = turf.polygon([coords.concat([coords[0]])]);
+
+  const centerPoint = turf.center(feature);
+
+  return {
+    lat: centerPoint.geometry.coordinates[0],
+    lng: centerPoint.geometry.coordinates[1],
   };
 };
 
@@ -105,6 +125,7 @@ export class EntityFormComponent {
             type: 'point',
             isVisible: true,
             position: cartesianToLngLat(positions[0]),
+            centroid: cartesianToLngLat(positions[0]),
           }
         : {
             id: crypto.randomUUID(),
@@ -113,6 +134,7 @@ export class EntityFormComponent {
             type: type as 'polyline' | 'polygon',
             isVisible: true,
             positions: positions.map((p) => cartesianToLngLat(p)),
+            centroid: getCentroid(positions),
           };
 
     this.store.dispatch(

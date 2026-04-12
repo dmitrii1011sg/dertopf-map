@@ -1,4 +1,5 @@
 import {
+  ChangeDetectionStrategy,
   Component,
   ContentChild,
   EventEmitter,
@@ -23,10 +24,12 @@ export interface DtEntityCard {
   imports: [CommonModule, FontAwesomeModule],
   templateUrl: './dt-entity-list.component.html',
   styleUrls: ['./dt-entity-list.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class DtEntityListComponent {
   @Input({ required: true }) entities: DtEntityCard[] = [];
   @Input() icon?: any;
+  @Input() enableOpen = false;
 
   @Output() open = new EventEmitter<string>();
 

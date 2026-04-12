@@ -6,14 +6,22 @@ import {
   inject,
   signal,
 } from '@angular/core';
-import { mapFeature } from '@data-access';
-import { DtEntityListComponent, DtPageTitleComponent } from '@dertopf-ui';
+import { MapActions, mapFeature, MapPolygon } from '@data-access';
+import {
+  DtEntityListComponent,
+  DtMapService,
+  DtPageTitleComponent,
+} from '@dertopf-ui';
 import { Store } from '@ngrx/store';
 import { DtSidebarLayoutSectionsModule } from '../../../../layouts/sidebar-layout';
 import {
   faDrawPolygon,
+  faEye,
+  faEyeSlash,
+  faLocationArrow,
   faSearch,
   faTimes,
+  faTrash,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
 
@@ -31,6 +39,7 @@ import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PolygonListComponent {
+  private readonly mapService = inject(DtMapService);
   private readonly store = inject(Store);
 
   readonly searchQuery = signal('');
@@ -54,7 +63,27 @@ export class PolygonListComponent {
     clear: faTimes,
   };
 
+  readonly actionIcons = {
+    delete: faTrash,
+    show: faEye,
+    hide: faEyeSlash,
+    flyTo: faLocationArrow,
+  };
+
   updateSearch(value: string): void {
     this.searchQuery.set(value);
+  }
+
+  toggleVisibility(entity: MapPolygon): void {
+    this.store.dispatch(
+      MapActions.toggleEntityVisibility({
+        id: entity.id,
+        typeEntity: 'polygon',
+      }),
+    );
+  }
+
+  flyTo(entity: MapPolygon): void {
+    this.mapService.flyTo(entity.centroid.lat, entity.centroid.lng, 1000);
   }
 }

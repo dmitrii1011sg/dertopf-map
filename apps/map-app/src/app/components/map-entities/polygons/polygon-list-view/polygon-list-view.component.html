@@ -25,9 +25,21 @@
   </app-sidebar-layout-section-header>
 
   <app-sidebar-layout-section-content>
-    <dt-entity-list
-      [entities]="filteredPoints()"
-      [icon]="icons.entity"
-    ></dt-entity-list>
+    <dt-entity-list [entities]="filteredPoints()" [icon]="icons.entity">
+      <ng-template #actions let-entity>
+        <button
+          [title]="entity.isVisible ? 'Hide' : 'Show'"
+          [class.active]="entity.isVisible"
+          (click)="toggleVisibility(entity)"
+        >
+          <fa-icon
+            [icon]="entity.isVisible ? actionIcons.show : actionIcons.hide"
+          ></fa-icon>
+        </button>
+        <button title="Fly to" (click)="flyTo(entity)">
+          <fa-icon [icon]="actionIcons.flyTo"></fa-icon>
+        </button>
+      </ng-template>
+    </dt-entity-list>
   </app-sidebar-layout-section-content>
 </app-sidebar-layout-sections>
