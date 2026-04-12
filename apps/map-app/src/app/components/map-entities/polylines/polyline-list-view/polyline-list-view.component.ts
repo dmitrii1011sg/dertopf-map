@@ -80,7 +80,7 @@ export class PolylineListComponent {
     this.store.dispatch(
       MapActions.toggleEntityVisibility({
         id: entity.id,
-        typeEntity: 'polygon',
+        typeEntity: 'polyline',
       }),
     );
   }
