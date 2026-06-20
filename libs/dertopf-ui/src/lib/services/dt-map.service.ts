@@ -16,7 +16,6 @@ export interface MouseRightClickEvent {
 }
 
 const defaultViewerOptions = {
-  terrain: Cesium.Terrain.fromWorldTerrain(),
   homeButton: false,
   infoBox: false,
   baseLayerPicker: false,
@@ -45,10 +44,12 @@ export class DtMapService {
       console.warn('Cesium Token is missing');
     }
 
-    this.viewer = new Cesium.Viewer(
-      container.nativeElement,
-      defaultViewerOptions,
-    );
+    const options = {
+      ...defaultViewerOptions,
+      terrain: Cesium.Terrain.fromWorldTerrain(),
+    };
+
+    this.viewer = new Cesium.Viewer(container.nativeElement, options);
 
     this.handler = new Cesium.ScreenSpaceEventHandler(this.viewer.canvas);
 
